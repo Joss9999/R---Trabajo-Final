@@ -19,35 +19,113 @@ csl: apa.csl.txt
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<center>Q-Lab Pontificia Universidad Católica del Perú</center>
+<center>Q-Lab - Pontificia Universidad Católica del Perú</center>
   
 <div class=text-justify>
 
 ## I. Introducción
   
-  This template, modified in MS Word 2007 and saved as a “Word 97-2003 Document” for the PC, provides authors with most of the formatting specifications needed for preparing electronic versions of their papers. All standard paper components have been specified for three reasons: (1) ease of use when formatting individual papers, (2) automatic compliance to electronic requirements that facilitate the concurrent or later production of electronic products, and (3) conformity of style throughout a conference proceedings. Margins, column widths, line spacing, and type styles are built-in; examples of the type styles are provided throughout this document and are identified in italic type, within parentheses, following the example. Some components, such as multi-leveled equations, graphics, and tables are not prescribed, although the various table text styles are provided. The formatter will need to create these components, incorporating the applicable criteria that follow.
+De acuerdo con la ONU, la informalidad es un problema crónico, y en países como Perú, Bolivia y Honduras 8 de cada 10 trabajadores jóvenes cuentan con empleos informales . No obstante, la pandemia incrementó lamentablemente las cifras, e incluso luego de dos años aún América Latina no ha logrado regresar a niveles de empleo del 2019, según la Organización Internacional del Trabajo.  
+En el caso del Perú, si bien se ha dado una aparente recuperación respecto a la tasa de informalidad de los años 2020 (75.3%) y 2021 (76.8%), el promedio de los primeros tres trimestres del 2022 asciende a 73.76%, aún superior que la tasa pre pandemia. 
+Dado ello, en el presente documento se busca realizar un análisis descriptivo del sector informal en el mercado laboral peruano y comparar las variaciones a lo largo de los últimos diez años poniendo énfasis en los años de la pandemia del COVID-19. Para este fin, se utilizará el software estadístico R, en específico, la librería gráfica “ggplot2” y la librería de manejo de bases de datos “tidyverse”. 
+Asimismo, se realizará un análisis por los 25 departamentos del Perú, para lo cual se utilizarán los paquetes “sf”, “purrr” y “ggrepel” a fin de manipular datos espaciales y presentar mapas comparando las tasas de informalidad.
 
-## II. Metodología
+## II. Sobre la Informalidad
 
-This template, modified in MS Word 2007 and saved as a “Word 97-2003 Document” for the PC, provides authors with most of the formatting specifications needed for preparing electronic versions of their papers. All standard paper components have been specified for three reasons: (1) ease of use when formatting individual papers, (2) automatic compliance to electronic requirements that facilitate the concurrent or later production of electronic products, and (3) conformity of style throughout a conference proceedings. Margins, column widths, line spacing, and type styles are built-in; examples of the type styles are provided throughout this document and are identified in italic type, within parentheses, following the example. Some components, such as multi-leveled equations, graphics, and tables are not prescribed, although the various table text styles are provided. The formatter will need to create these components, incorporating the applicable criteria that follow.
+El concepto de informalidad fue acuñado por el economista británico Keith Hart en un informe de misión sobre Kenya elaborado por la OIT en 1972, en la que se encontró que las personas pobres lograban sobrevivir mediante oficios, actividades y tareas que se realizaban a pequeña escala y –sin ser actividades delictivas– a menudo se encontraban al margen de las normativas vigentes.  
+
+Desde entonces, el término informalidad posee diversos significados para diferentes personas, pero generalmente tiene connotaciones negativas como: trabajadores desprotegidos, regulación excesiva, baja productividad, competencia desleal, evasión de la ley, bajos pagos o no pago de impuestos y trabajo “subterráneo” o en la sombra.  
+
+Dado que en este documento se propone identificar los principales indicadores de la informalidad en el Perú, es relevante definir algunos conceptos que son usados con frecuentemente para referirse a la informalidad : 
+
+Economía informal: Conjunto de actividades económicas desarrolladas por los trabajadores y las unidades productivas que no cumplen con las regulaciones previstas por el estado para el ejercicio de sus actividades. Está compuesta por el sector informal y el empleo informal.
+
+*Sector informal*: Conformado por las unidades productivas no constituidas en sociedad que no están registradas en la administración tributaria (SUNAT). Para el caso de las unidades productivas del sector primario (Agricultura, Pesca y Minería) no constituidas en sociedad, se considera que todas pertenecen al sector informal. También excluye a las cuasi sociedades, es decir, empresas no constituidas en sociedad que funciona en todo –o en casi todo– como si fuera una sociedad.
+
+*Empleo informal o informalidad laboral*: Son aquellos empleos que no cuentan con los beneficios estipulados por ley como el acceso a la seguridad social pagada por el empleador, vacaciones pagadas, licencia por enfermedad, etc. 
+
+### a. Informalidad en el Perú 
+
+En el Perú, la informalidad es un problema estructural grave que dificulta la pronta y acelerada recuperación económica que necesita el país. La formalización de la economía debe ser uno de los principales objetivos de las políticas públicas y para ello necesitamos entender la complejidad del problema, tanto en sus raíces como en sus consecuencias.  
+
+En el año 2021, la tasa de empleo informal del país, fue de 76,8%; siendo 1,5 puntos porcentuales más que en el año 2020 y 4,1 puntos porcentuales más que en el 2019.  La mayoría de los empleos informales se han generado en el área urbana, a través de la mayor contratación de mano de obra no calificada en empresas de uno a 10 trabajadores, concentradas principalmente en unidades productivas del sector agropecuario. 
+
+## III. Metodología
 
 ### a. Base de Datos
 
-This template, modified in MS Word 2007 and saved as a “Word 97-2003 Document” for the PC, provides authors with most of the formatting specifications needed for preparing electronic versions of their papers. All standard paper components have been specified for three reasons: (1) ease of use when formatting individual papers, (2) automatic compliance to electronic requirements that facilitate the concurrent or later production of electronic products, and (3) conformity of style throughout a conference proceedings. Margins, column widths, line spacing, and type styles are built-in; examples of the type styles are provided throughout this document and are identified in italic type, within parentheses, following the example. Some components, such as multi-leveled equations, graphics, and tables are not prescribed, although the various table text styles are provided. The formatter will need to create these components, incorporating the applicable criteria that follow.
+Para el desarrollo de las bases de datos se utilizó la Encuesta Nacional de Hogares (ENAHO) para los años 2011 al 2022, así como información geoespacial de los 25 departamentos del Perú obtenido de […]. Gracias a ello, se construyeron 4 bases de datos estructuradas con las siguientes variables: 
+
+	Base principal: Año, Tasa de informalidad, Tasa de Informalidad Rural. Tasa de Informalidad Urbana, Tasa de Informalidad en Hombres, Tasa de Informalidad en Mujeres, Población en situación de informalidad desde los 14 años,  Población en situación de informalidad desde los 25 años,  Población en situación de informalidad desde los 45 años,  Población en situación de informalidad desde los 65 años,  Población en situación de informalidad en microempresas, Población en situación de informalidad en pequeñas empresas, Población en situación de informalidad en medianas y grandes empresas, Población de 14 a 24 años, Población de 25 a 44 años, Población de 45 a 64 años, Población de 65 años a más, Cantidad de Microempresas, Cantidad de Pequeñas Empresas, Cantidad de Medianas y Grandes Empresas, Cantidad de Empresas no Identificadas en las categorías anteriores, Ingresos Promedio Mensuales, Ingresos Promedio Mensuales Formales, Ingresos Promedio Mensuales Informales, PEA ocupada, PEA desocupada, PEA ocupada urbana, PEA ocupada rural, PEA ocupada Hombres, PEA ocupada Mujer, Tasa de Desempleo. 
+
+	Informalidad en Regiones: Año y la tasa de informalidad por los 25 departamentos del Perú.
+
+	Informalidad en Regiones: Año y la población total por los 25 departamentos del Perú.
+
+Departamentos del Perú: […]
 
 ### b. Técnicas y algoritmos aplicados
+Los datos descritos serán trabajados en R, un entorno y lenguaje de programación libre para computación estadística y gráficos, que incluye “paquetes” los cuales son colecciones de funciones, datos y código compilado en un formato bien definido que son clasificados mediante “librerías”, las cuales son conjuntos de instrucciones que albergan scripts y son ejecutados mediante instrucciones. [… cita]
+Los paquetes y librerías que se utilizarán para el presente documento son:
 
-This template, modified in MS Word 2007 and saved as a “Word 97-2003 Document” for the PC, provides authors with most of the formatting specifications needed for preparing electronic versions of their papers. All standard paper components have been specified for three reasons: (1) ease of use when formatting individual papers, (2) automatic compliance to electronic requirements that facilitate the concurrent or later production of electronic products, and (3) conformity of style throughout a conference proceedings. Margins, column widths, line spacing, and type styles are built-in; examples of the type styles are provided throughout this document and are identified in italic type, within parentheses, following the example. Some components, such as multi-leveled equations, graphics, and tables are not prescribed, although the various table text styles are provided. The formatter will need to create these components, incorporating the applicable criteria that follow.
+TYDYVERSE: el paquete incluye librerías que funcionan en armonía para el análisis de datos cotidianos. Comparten representaciones de datos y diseño de API comunes para visualizar, manipular, ordenar e importar data. 
 
-## III. Resultados y Discusión 
+GGPLOT2: crea visualizaciones de datos usando la gramática de los gráficos, trabaja mediante capas en el cual cada una proporciona información sobre cómo queremos representar los datos. La ventaja del paquete es la gran cantidad de personalización y proporciona una interfaz simple para especificar los elementos de un gráfico.
 
-This template, modified in MS Word 2007 and saved as a “Word 97-2003 Document” for the PC, provides authors with most of the formatting specifications needed for preparing electronic versions of their papers. All standard paper components have been specified for three reasons: (1) ease of use when formatting individual papers, (2) automatic compliance to electronic requirements that facilitate the concurrent or later production of electronic products, and (3) conformity of style throughout a conference proceedings. Margins, column widths, line spacing, and type styles are built-in; examples of the type styles are provided throughout this document and are identified in italic type, within parentheses, following the example. Some components, such as multi-leveled equations, graphics, and tables are not prescribed, although the various table text styles are provided. The formatter will need to create these components, incorporating the applicable criteria that follow.
+SF: codifica datos de vectores espaciales (vértices de polígonos, sistemas de coordenadas y líneas etc.) de forma simple y estandarizada. Se une a otras librerías como: “GDAL” para leer y escribir datos, a “GEOS” para operaciones geométricas y a “PROJ” para conversiones de proyección y transformaciones de datos. Se obtiene formas geográficas vectoriales el cual permite almacenar una estructura de datos vectoriales que contienen atributos mediante varias capas. Cada capa tiene información diferente y se muestra u oculta en función del nivel de zoom del mapa, lo que permite una visualización más clara.
 
-## IV. Conclusiones
+PURRR: esta librería nos permite trabajar con funciones y vectores mediante un conjunto completo y consistente de herramientas de programación mejoradas de R que realizan lo mismo de estas, pero con otras ventajas: simple de recordar, completa y es sintácticamente estable, pero por el lado de su ejecución puede ser lenta. 
 
-This template, modified in MS Word 2007 and saved as a “Word 97-2003 Document” for the PC, provides authors with most of the formatting specifications needed for preparing electronic versions of their papers. All standard paper components have been specified for three reasons: (1) ease of use when formatting individual papers, (2) automatic compliance to electronic requirements that facilitate the concurrent or later production of electronic products, and (3) conformity of style throughout a conference proceedings. Margins, column widths, line spacing, and type styles are built-in; examples of the type styles are provided throughout this document and are identified in italic type, within parentheses, following the example. Some components, such as multi-leveled equations, graphics, and tables are not prescribed, although the various table text styles are provided. The formatter will need to create these components, incorporating the applicable criteria that follow.
+GGREPEL: proporciona funciones que hacen que las etiquetas se repelen tanto como sea posible ya que los textos y las etiquetas se colocan en las coordenadas que selecciones, pero se pueden solapar. 
+
+La librería a utilizar es DPLYR, la cual presenta conjunto de funciones que permite resolver los desafíos de manipulación de datos más comunes permitiendo ordenar las bases de datos de tal manera que las variables se puedan analizar mediante los demás paquetes.
+
+	mutate() agrega nuevas variables que son funciones de variables existentes
+
+	select() elige variables en función de sus nombres.
+
+	filter() selecciona casos en función de sus valores.
+
+	summarise() reduce múltiples valores a un solo resumen.
+
+	arrenge() cambia el orden de las filas.
+ 
+
+## IV. Resultados y Discusión 
+
+
+
+## V. Conclusiones
+
+
 
 ## Bibliografía
+
+
+[1]	Organización de las Naciones Unidas
+Organización de las Naciones Unidas. Consulta: 26 de enero de 2023
+https://news.un.org/es/audio/2015/04/1408961
+
+[2]	Organización Internacional del Trabajo (2021). Panorama Laboral 2021. América Latina y el Caribe. Lima: OIT / Oficina Regional para América Latina y el Caribe, 2021. 272 p.
+
+[3]	Salazar Xirinachs, José Manuel y Chacaltana, Juan (2018)  Políticas de Formalización en América Latina: Avances y   Desafíos. Lima: OIT, Oficina Regional para América Latina y el Caribe, FORLAC, 2018.
+
+[4]	Perry, G., O. Arias, P. Fajnzylber, W. Maloney, A. Mason y J. Saavedra 
+ 2007 Informalidad: Escape y exclusión. Estudios del Banco Mundial sobre América Latina y el Caribe. Banco Mundial, 2007, Washington, D.C.
+[5]	Centro Nacional de Planeamiento Estratégico (CEPLAN). 
+2016 Economía informal en Perú: Situación actual y perspectivas. Serie: Avance de Investigación / Lima, Perú
+
+[6]	Carlos Gonzalez
+2022 “Informalidad en Perú: raíces y trampas que explican el estancamiento económico”. En America Retail. Consulta 23 de enerodel 2022
+
+[7]	Diario Gestión
+Diario Gestión/Economia. Consulta: 24 de enero de 2023
+
+https://gestion.pe/economia/management-empleo/cerca-de-18-millones-de-peruanos-entraron-a-la-informalidad-laboral-el-2021-informalidad-laboral-inei-trabajo-sin-derechos-sociales
+
+
+
+
 
 ## R Markdown
 
