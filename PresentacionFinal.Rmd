@@ -70,6 +70,7 @@ Se busca realizar un análisis descriptivo del sector informal en el mercado lab
 
 Adicionalmente, se realizará un análisis comparativo entre los 24  departamentos del Perú y la Provincia Constitucional del Callao, para lo cual se utilizarán los paquetes *“sf”*, *“purrr”*, *“ggrepel”* y *“gganimate”* a fin de manipular datos espaciales y presentar mapas con las tasas de informalidad.
 
+
 ## II. Metodología
 
 ## a. Base de Datos
@@ -165,6 +166,7 @@ head(b)
 - **[reshape2](https://rpubs.com/enralvar/ReShape2)**: permite la transformación de datos adaptandolos a formatos ancho y largo.
 
 ##
+
 Otra librería principal a utilizar, dentro del paquete *"tidyverse"*, es [*dplyr*](https://dplyr.tidyverse.org/), la cual presenta conjunto de funciones que permite resolver los desafíos de manipulación de datos más comunes permitiendo ordenar las bases de datos de tal manera que las variables se puedan analizar mediante los demás paquetes. Entre las funciones más usuales a utilizar son: 
 
 - mutate() agrega nuevas variables que son funciones de variables existentes
@@ -188,7 +190,7 @@ G0 <- data_grafico0 |>
   ggplot(aes(x = as.factor(Año), y = value, fill = value)) +
   geom_col() +
   theme_minimal() +
-  coord_cartesian(ylim = c(60, 80)) +
+#  coord_cartesian(ylim = c(60, 80)) +
   scale_fill_distiller(palette = "Blues", direction = 1) +
   labs(title = "Evolución de la tasa de informalidad en Perú del 2011 al 2022",
        caption = "Fuente: Enaho",

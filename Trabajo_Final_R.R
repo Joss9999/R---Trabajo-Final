@@ -162,7 +162,7 @@ G0 <- data_grafico0 |>
   ggplot(aes(x = as.factor(Año), y = value, fill = value)) +
   geom_col() +
   theme_minimal() +
-  coord_cartesian(ylim = c(60, 80)) +
+#  coord_cartesian(ylim = c(60, 80)) +
   scale_fill_distiller(palette = "Blues", direction = 1) +
   labs(title = "Evolución de la tasa de informalidad en Perú del 2011 al 2022",
        caption = "Fuente: Enaho",
